@@ -6,17 +6,16 @@
 typedef struct {
 	char date[11];
 	char time[6];
-	char steps[3];
+	char steps[4];
 } FITNESS_DATA;
 
 // Define any additional variables here
-char record[100]; //Record currently being read in is stored here
-int count=0; // Keeps track of the number of records being read in
-char datereturn[11];
-char timereturn[6];
-char stepsreturn[3];
-
-int i=0;
+int endreach = 0;
+int count = 0;
+char record[50];
+char datetoken[50];
+char timetoken[50];
+char stepstoken[50];
 
 
 // This is your helper function. Do not change it in any way.
@@ -49,26 +48,25 @@ void tokeniseRecord(const char *input, const char *delimiter,
 
 // Complete the main function
 int main() {
-    //declare our array of structs
+    FILE *pointer;
+    pointer = fopen("FitnessData_2023.csv", "r");
+
     FITNESS_DATA data[100];
 
-    //open csv file
-    FILE *fitnessfile;
-    fitnessfile = fopen("FitnessData_2023.csv","r");
-
-    while(fgets(record, 100, fitnessfile))
+    while(endreach == 0)
     {
-        count = count+1;
-        printf("%s,%d\n",record,count);
-        tokeniseRecord(record,",",datereturn,timereturn,stepsreturn);
-        strcpy(data[count].date,datereturn);
-        printf("date: %s\n",data[count].date);
-        strcpy(data[count].time,timereturn);
-        printf("time: %s\n",data[count].time);
-        strcpy(data[count].steps,stepsreturn);
-        printf("steps: %s\n",data[count].steps);
+        count= count+1;
+        fgets(record, 50, pointer);
+        tokeniseRecord(record, ",", datetoken, timetoken, stepstoken);
+        strcpy(data[count].date, datetoken);
+        strcpy(data[count].time, timetoken);
+        strcpy(data[count].steps, stepstoken);
+        if(record == "\n")
+        {
+            endreach == 1;
+        }
     }
 
-    printf("Number of records in file: %d\n", count);
-    printf("%s/%s/%s\n",data[0].date,data[0].time,data[0].steps);
+    fclose(pointer);
+
 }
