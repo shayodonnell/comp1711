@@ -10,7 +10,12 @@ typedef struct {
 } FITNESS_DATA;
 
 // Define any additional variables here
-
+int endreach = 0;
+int count = 0;
+char record[50];
+char date[];
+char time[];
+char steps[];
 
 
 // This is your helper function. Do not change it in any way.
@@ -45,4 +50,18 @@ void tokeniseRecord(const char *input, const char *delimiter,
 int main() {
     FILE *pointer;
     pointer = fopen("FitnessData_2023.csv", "r");
+
+    FITNESS_DATA data[100];
+
+    while(endreach == 0)
+    {
+        count= count+1;
+        fgets(record, 50, pointer);
+        tokeniseRecord(record, ",", date, time, steps);
+        data[count].date = date;
+        data[count].time = time;
+        data[count].steps = steps;
+    }
+
+
 }
