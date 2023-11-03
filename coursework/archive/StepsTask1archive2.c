@@ -10,18 +10,13 @@ typedef struct {
 } FITNESS_DATA;
 
 // Define any additional variables here
-
-char record[24];//stores record being read in
-
-//Receive tokens
+char record[22]; //Record currently being read in is stored here
+int count=0; // Keeps track of the number of records being read in
 char datereturn[11];
 char timereturn[6];
-char stepsreturn[6];
+char stepsreturn[5];
+int stepsreturnint;
 
-int stepsreturnint;//converts stepsreturn to string
-
-//counters
-int count = 0;
 int i=0;
 
 
@@ -55,32 +50,38 @@ void tokeniseRecord(const char *input, const char *delimiter,
 
 // Complete the main function
 int main() {
-
-    //Initialise struct. Only need 60 indexes, since record length is 59.
+    //declare our array of structs
     FITNESS_DATA data[60];
-    
-    //read in csv file.
+
+    //open csv file
     FILE *fitnessfile;
     fitnessfile = fopen("FitnessData_2023.csv","r");
 
-    while(fgets(record, 24, fitnessfile) != NULL)
+    while(fgets(record, 22, fitnessfile))
     {
-        tokeniseRecord(record,",",datereturn,timereturn,stepsreturn);
+        printf("Record: %s, Count: %d\n",record,count);
 
-        strcpy(data[count].date, datereturn);
+        tokeniseRecord(record, ",", datereturn, timereturn, stepsreturn);
 
-        strcpy(data[count].time, timereturn);
+        strcpy(data[count].date,datereturn);
+
+        printf("date: %s\n",data[count].date);
+
+        strcpy(data[count].time,timereturn);
+        printf("time: %s\n",data[count].time);
 
         stepsreturnint = atoi(stepsreturn);
         data[count].steps = stepsreturnint;
+        printf("steps: %d\n",data[count].steps);
 
-        count=count+1;
+        printf("\n%s,%s,%s",datereturn,timereturn,stepsreturn);
+
+        count= count+1;
     }
-    
+
     fclose(fitnessfile);
 
     printf("Number of records in file: %d\n", count);
-    
     for(i=0; i<3; i++)
     {
         printf("%s/%s/%d\n", data[i].date, data[i].time, data[i].steps);
