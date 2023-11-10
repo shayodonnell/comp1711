@@ -11,14 +11,16 @@ typedef struct {
 
 // Define any additional variables here
 
-char record[24];//stores record being read in
+//stores record being read in
+char record[24];
 
 //Receive tokens
 char datereturn[11];
 char timereturn[6];
 char stepsreturn[6];
 
-int stepsreturnint;//converts stepsreturn to string
+//converts stepsreturn to string
+int stepsreturnint;
 
 //counters
 int count = 0;
@@ -63,24 +65,29 @@ int main() {
     FILE *fitnessfile;
     fitnessfile = fopen("FitnessData_2023.csv","r");
 
+    //fetches each line
     while(fgets(record, 24, fitnessfile) != NULL)
     {
+        //tokenise
         tokeniseRecord(record,",",datereturn,timereturn,stepsreturn);
 
+        //insert into array
         strcpy(data[count].date, datereturn);
-
         strcpy(data[count].time, timereturn);
-
         stepsreturnint = atoi(stepsreturn);
         data[count].steps = stepsreturnint;
 
+        //incrememnt count
         count=count+1;
     }
     
+    //close file
     fclose(fitnessfile);
 
+    //print number of records in file
     printf("Number of records in file: %d\n", count);
     
+    //print first three records
     for(i=0; i<3; i++)
     {
         printf("%s/%s/%d\n", data[i].date, data[i].time, data[i].steps);
