@@ -12,17 +12,20 @@ typedef struct {
 // Define any additional variables here
 
 //stores record being read in
-char record[24];
+char record[24]; //can be local
 
 //Receive tokens
+//can be local
 char datereturn[11];
 char timereturn[6];
 char stepsreturn[6];
 
 //converts stepsreturn to string
+//can be local
 int stepsreturnint;
 
 //counters
+//can be local
 int count = 0;
 int i=0;
 
@@ -59,7 +62,7 @@ void tokeniseRecord(const char *input, const char *delimiter,
 int main() {
 
     //Initialise struct. Only need 60 indexes, since record length is 59.
-    FITNESS_DATA data[60];
+    FITNESS_DATA data[60]; //cannot be local
     
     //read in csv file.
     FILE *fitnessfile;
